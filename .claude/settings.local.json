@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx react-native *)",
+      "Bash(ruby --version)",
+      "Bash(pod --version)",
+      "Bash(brew --version)",
+      "Read(//Users/petermark/Desktop/AI/**)",
+      "Bash(npx @react-native-community/cli@latest init VibeBrowser --directory Vibe_Browser_App --skip-git-init)",
+      "Bash(gem install *)",
+      "Bash(echo \"Installing CocoaPods in background PID: $!\")",
+      "Bash(npx @react-native-community/cli@latest init VibeBrowser --directory Vibe_Browser_App --skip-git-init --skip-install)",
+      "Bash(wait)",
+      "Bash(gem list *)",
+      "Bash(brew install *)",
+      "Bash(USE_FRAMEWORKS=static pod install)",
+      "Bash(xcode-select -p)",
+      "Read(//Applications/**)",
+      "Bash(xcodebuild -version)",
+      "Bash(xcrun simctl *)",
+      "Bash(open -a Simulator)",
+      "Bash(npm install *)",
+      "Bash(pod install *)",
+      "Bash(kill %1)",
+      "Bash(npm uninstall *)",
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}
