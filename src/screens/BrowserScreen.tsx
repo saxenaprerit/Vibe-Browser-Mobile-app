@@ -24,6 +24,7 @@ export default function BrowserScreen() {
   const connectivity = useConnectivity();
   const routing = resolveProvider(connectivity);
   const {getStatus, prefetch, evict} = usePrefetch();
+  const [offlineQueryMessage, setOfflineQueryMessage] = useState<string | null>(null);
 
   const activeTab = tabs.find(t => t.id === activeId) ?? tabs[0];
 
@@ -47,6 +48,9 @@ export default function BrowserScreen() {
     if (isNavigationUrl(query)) {
       const url = /^https?:\/\//i.test(query) ? query : `https://${query}`;
       updateTab(activeId, {url});
+    } else if (!connectivity.isOnline) {
+      // On-device AI not yet implemented — show placeholder until Foundation Models bridge is wired
+      setOfflineQueryMessage(`On-device AI coming soon. Query: "${query}"`);
     } else {
       updateTab(activeId, {
         url: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
@@ -100,7 +104,7 @@ export default function BrowserScreen() {
       <View style={styles.webviewContainer}>
         {source ? (
           <WebView
-            key={activeId}
+            key={`${activeId}-${connectivity.isOnline}`}
             source={source}
             style={styles.webview}
             onNavigationStateChange={handleNav}
@@ -112,6 +116,16 @@ export default function BrowserScreen() {
         ) : (
           <View style={styles.newTabPlaceholder}>
             <Text style={styles.newTabHint}>Ask, search, or go to a site</Text>
+          </View>
+        )}
+        {offlineQueryMessage && (
+          <View style={styles.offlineQueryBanner}>
+            <Text style={styles.offlineQueryText}>{offlineQueryMessage}</Text>
+            <Text
+              style={styles.offlineQueryDismiss}
+              onPress={() => setOfflineQueryMessage(null)}>
+              Dismiss
+            </Text>
           </View>
         )}
       </View>
@@ -151,5 +165,23 @@ const styles = StyleSheet.create({
   newTabHint: {
     fontSize: 16,
     color: '#bbb',
+  },
+  offlineQueryBanner: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#1c1c1e',
+    padding: 16,
+    gap: 8,
+  },
+  offlineQueryText: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  offlineQueryDismiss: {
+    color: '#007AFF',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
